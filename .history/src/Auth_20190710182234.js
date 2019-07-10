@@ -100,21 +100,19 @@ export default withAuth(
     }
 
     async refreshSession() {
-      fetch(
-        "https://dev-880339.okta.com/api/v1/authorizationServers/00om20vjs4ErRCJsq356/scopes",
-        {
-          method: "GET",
-          credentials: "include",
-          mode: "no-cors"
-        }
-      )
+      fetch("https://dev-880339.okta.com/oauth2/default/v1/authorize", {
+        method: "POST",
+        credentials: "include"
+      })
         .then(response => response.json())
         .then(data => {
           console.log(data);
         })
         .catch(error => console.log(error));
     }
-
+    // idp:
+    // id: "00om20vjs4ErRCJsq356"
+    // type: "OKTA"
     render() {
       if (this.state.authenticated === null) return null;
       return this.state.authenticated ? (
@@ -164,12 +162,12 @@ const InfoComponent = ({ accessToken, idToken, user, data }) => (
       <hr />
       <div>
         <h3>IDP => </h3>
-        <h3>{data && data.idp.id}</h3>
+        <h3>{data ? data.idp.id}</h3>
       </div>
       <hr />
       <div>
-        <h3>Type => </h3>
-        <h3>{data && data.idp.type}</h3>
+        <h3>SESSION EXPIRES AT => </h3>
+        <h3>{data ? data.expiresAt : " ===== EXPIRED"}</h3>
       </div>
     </div>
     <div className="row">{user && <UserInfo user={user} />}</div>

@@ -5,7 +5,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 60px;
 }
 
 code {
@@ -16,12 +15,8 @@ code {
 .row {
   border: 2px solid green;
   margin: 20px;
-  overflow: hidden;
-}
-h3 {
-  display: inline;
-}
 
-button {
-  font-size: 16px;
+  h3 {
+    display: flex;
+  }
 }

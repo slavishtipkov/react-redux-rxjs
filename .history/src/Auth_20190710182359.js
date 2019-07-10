@@ -100,14 +100,10 @@ export default withAuth(
     }
 
     async refreshSession() {
-      fetch(
-        "https://dev-880339.okta.com/api/v1/authorizationServers/00om20vjs4ErRCJsq356/scopes",
-        {
-          method: "GET",
-          credentials: "include",
-          mode: "no-cors"
-        }
-      )
+      fetch("https://dev-880339.okta.com/oauth2/default/v1/authorize", {
+        method: "POST",
+        credentials: "include"
+      })
         .then(response => response.json())
         .then(data => {
           console.log(data);

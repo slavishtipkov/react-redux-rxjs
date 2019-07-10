@@ -19,7 +19,7 @@ export default withAuth(
       this.logout = this.logout.bind(this);
       this.checkSession = this.checkSession.bind(this);
       this.openIdConfig = this.openIdConfig.bind(this);
-      this.refreshSession = this.refreshSession.bind(this);
+      this.customScopes = this.customScopes.bind(this);
     }
 
     async checkAuthentication() {
@@ -99,13 +99,12 @@ export default withAuth(
         .catch(error => console.log(error));
     }
 
-    async refreshSession() {
+    async customScopes() {
       fetch(
-        "https://dev-880339.okta.com/api/v1/authorizationServers/00om20vjs4ErRCJsq356/scopes",
+        "https://dev-880339.okta.com/api/v1/authorizationServers/default/claims",
         {
           method: "GET",
-          credentials: "include",
-          mode: "no-cors"
+          credentials: "include"
         }
       )
         .then(response => response.json())
@@ -122,7 +121,6 @@ export default withAuth(
           <button onClick={this.logout}>Logout</button>
           <button onClick={this.checkSession}>Check Session</button>
           <button onClick={this.openIdConfig}>OIDC config</button>
-          <button onClick={this.refreshSession}>Refresh Session</button>
           {this.state.showInfo ? (
             <InfoComponent
               accessToken={this.state.accessToken}
@@ -160,16 +158,6 @@ const InfoComponent = ({ accessToken, idToken, user, data }) => (
       <div>
         <h3>SESSION EXPIRES AT => </h3>
         <h3>{data ? data.expiresAt : " ===== EXPIRED"}</h3>
-      </div>
-      <hr />
-      <div>
-        <h3>IDP => </h3>
-        <h3>{data && data.idp.id}</h3>
-      </div>
-      <hr />
-      <div>
-        <h3>Type => </h3>
-        <h3>{data && data.idp.type}</h3>
       </div>
     </div>
     <div className="row">{user && <UserInfo user={user} />}</div>

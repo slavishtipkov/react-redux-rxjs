@@ -19,7 +19,7 @@ export default withAuth(
       this.logout = this.logout.bind(this);
       this.checkSession = this.checkSession.bind(this);
       this.openIdConfig = this.openIdConfig.bind(this);
-      this.refreshSession = this.refreshSession.bind(this);
+      this.customScopes = this.customScopes.bind(this);
     }
 
     async checkAuthentication() {
@@ -78,10 +78,7 @@ export default withAuth(
           this.setState({ data });
           console.log(data);
         })
-        .catch(error => {
-          this.setState({ error: "Session expired." });
-          console.log(error);
-        });
+        .catch(error => console.log(error));
     }
 
     async openIdConfig() {
@@ -99,15 +96,11 @@ export default withAuth(
         .catch(error => console.log(error));
     }
 
-    async refreshSession() {
-      fetch(
-        "https://dev-880339.okta.com/api/v1/authorizationServers/00om20vjs4ErRCJsq356/scopes",
-        {
-          method: "GET",
-          credentials: "include",
-          mode: "no-cors"
-        }
-      )
+    async customScopes() {
+      fetch("https://dev-880339.okta.com /api/v1/authorizationServers", {
+        method: "GET",
+        mode: "no-cors"
+      })
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -122,7 +115,7 @@ export default withAuth(
           <button onClick={this.logout}>Logout</button>
           <button onClick={this.checkSession}>Check Session</button>
           <button onClick={this.openIdConfig}>OIDC config</button>
-          <button onClick={this.refreshSession}>Refresh Session</button>
+          <button onClick={this.customScopes}>Custom Scopes</button>
           {this.state.showInfo ? (
             <InfoComponent
               accessToken={this.state.accessToken}
@@ -143,35 +136,26 @@ export default withAuth(
 
 const InfoComponent = ({ accessToken, idToken, user, data }) => (
   <div className="info">
+    <hr />
+    <hr />
     <div className="row">
-      <h2 className="info-label">Access Token</h2>
+      <div className="info-label">Access Token</div>
       <div className="info-value">{accessToken ? accessToken : ""}</div>
     </div>
+    <hr />
+    <hr />
     <div className="row">
-      <h2 className="info-label">Id Token</h2>
+      <div className="info-label">Id Token</div>
       <div className="info-value">{idToken ? idToken : ""}</div>
     </div>
+    <hr />
+    <hr />
     <div className="row">
-      <div>
-        <h3>SESSION CREATED AT => </h3>{" "}
-        <h3>{data ? data.createdAt : " ===== DOESN'T MATTER"}</h3>
-      </div>
-      <hr />
-      <div>
-        <h3>SESSION EXPIRES AT => </h3>
-        <h3>{data ? data.expiresAt : " ===== EXPIRED"}</h3>
-      </div>
-      <hr />
-      <div>
-        <h3>IDP => </h3>
-        <h3>{data && data.idp.id}</h3>
-      </div>
-      <hr />
-      <div>
-        <h3>Type => </h3>
-        <h3>{data && data.idp.type}</h3>
-      </div>
+      <div>{data && data.createdAt}</div>
+      <div>{data && data.expiresAt}</div>
     </div>
+    <hr />
+    <hr />
     <div className="row">{user && <UserInfo user={user} />}</div>
   </div>
 );

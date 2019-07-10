@@ -5,23 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 60px;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-.row {
-  border: 2px solid green;
-  margin: 20px;
-  overflow: hidden;
-}
-h3 {
-  display: inline;
-}
-
-button {
-  font-size: 16px;
 }

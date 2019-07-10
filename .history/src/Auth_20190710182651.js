@@ -101,11 +101,10 @@ export default withAuth(
 
     async refreshSession() {
       fetch(
-        "https://dev-880339.okta.com/api/v1/authorizationServers/00om20vjs4ErRCJsq356/scopes",
+        "https://dev-880339.okta.com//api/v1/authorizationServers/${authServerId}/scopes",
         {
           method: "GET",
-          credentials: "include",
-          mode: "no-cors"
+          credentials: "include"
         }
       )
         .then(response => response.json())
